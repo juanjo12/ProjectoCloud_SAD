@@ -1,0 +1,108 @@
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
+          integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <title>jsversion</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">IES Emili Darder</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="/restaurants">RestAPI</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="/restUse.html">Ajax version</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<main role="main" class="container">
+    <div class="row featurette">
+        <div class="col-md-7">
+            <!-- title = titulo asignado en la clase Launcher, subtitle = sub  -->
+            <h1>Restaurantes</h1>
+
+        </div>
+
+    </div>
+    <!-- posts = restaurantes -->
+
+    <div class="row center mt-2">
+        <!--lista los restaurantes y les asigna el nombre item, atraves de item accedemos a los atributos de los restaurantes -->
+
+        <div class="col-md-12 border border-dark">
+            <h2>Restaurantes</h2>
+            <div class="media-body">
+                <div class="restaurants row"></div>
+            </div>
+        </div>
+    </div>
+
+</main>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<div id="tmp" style="display: none;"></div>
+<script type="text/html" id="template">
+    <div class="col-4 card">
+        <div class="card-body">
+            <h5 class="card-title">
+                <div data-content="name"></div>
+            </h5>
+            <div data-content="address"></div>
+            <div data-content="website"></div>
+            <div data-content="type"></div>
+            <div data-content="number"></div>
+        </div>
+
+    </div>
+</script>
+<script
+        src="http://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script src="js/jquery.loadTemplate.min.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"
+        integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWfdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+        crossorigin="anonymous"></script>-->
+<script>
+    $(document).ready(function () {
+
+        $.get("/restaurants", function (data) {
+            console.log(data);
+            var contentHtml = "";
+            $.each(data, function (index, value) {
+                //var cell= "<div>"+value.name+"</div>";
+                $("#tmp").loadTemplate($("#template"),
+                    {
+                        name: value.name,
+                        address: value.address,
+                        website: value.website,
+                        type: value.type,
+                        number: value.numero
+                    });
+                var cell = $("#tmp").html();
+                contentHtml += cell;
+            });
+            $(".restaurants").html(contentHtml);
+            console.log("Load was performed.");
+        });
+    });
+</script>
+</body>
+</html>
